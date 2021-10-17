@@ -3,6 +3,7 @@ import boto3
 
 
 def query_results(session, params, wait=True):
+    # Creamos el cliente para consultar a Athena
     client = session.client('athena')
 
     # This function executes the query and returns the query execution ID
