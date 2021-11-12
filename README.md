@@ -25,32 +25,39 @@ Para ejecutar desde el lambda la query de Athena necesitamos lo siguiente:
 
 Esto se implementa como sigue. Al rol que usamos para ejecutar la lambda le asociamos las siguientes policies:
 
-![Rol](.\imagenes\Perfil.png)
+![Rol](./imagenes/Perfil.png)
 
 La policy `AWSLambdaBasicExecutionRole` es la estandard para ejecutar Lambdas. Le hemos añadido otra policy gestionada, `AmazonS3ReadOnlyAccess`. Esta policy nos permite cubrir las necesidad de poder consultar los buckets de S3 que consultará Athena:
 
 - Permisos para consultar los buckets de `S3` en los que se guardan los datos que Athena va a consultar
 - Permisos para poder crear objetos en el bucket de resultados
 
-Usamos una policy custom que nos permitirá cubrir el resto de permisos que precisamos. El [json de la policy](.\policy.json) contiene los permisos y los recursos sobre los que se aplican. Veamos su representación gráfica:
+Usamos una policy custom que nos permitirá cubrir el resto de permisos que precisamos. El [json de la policy](./policy.json) contiene los permisos y los recursos sobre los que se aplican. Veamos su representación gráfica:
 - Permisos para acceder a `AWS Glue`. Esto es necesario porque Athena va a necesitar recuperar los metadatos de AWS Glue
 
-![Glue](.\imagenes\Glue.png)
+![Glue](./imagenes/Glue.png)
+
+__UPDATE__
+
+También se precisan estos dos permisos:
+
+- GetPartition
+- GetPartitions
 
 - Permisos en Athena para iniciar la query, ejecutarla y recuperar la respuesta
 
-![Glue](.\imagenes\Athena.png)
+![Glue](./imagenes/Athena.png)
 
 - Permisos para poder listar el bucket de resultados y los objetos que contiene, así como borrarlos
 
-![S3](.\imagenes\S3.png)
+![S3](./imagenes/S3.png)
 
 ## Modulos Python
 
 Para crear un módulo en Python:
 1. Creamos un directorio donde crearemos nuestro módulo. Le llamaremos `miathena`:
 
-![Modulo](.\imagenes\modulo.png)
+![Modulo](./imagenes/modulo.png)
 
 2. Añadimos los archivos donde se implementa el módulo `miathena.`py`
 3. Creamos un archivo `__init__.py` donde incluiremos el código de inicialización del módulo, así como los componentes que se exportarán. En nuestro caso exportamos todos los métodos. Nótese el "." antes del nombre del archivo donde se incluyen los métodos que se exportan:
